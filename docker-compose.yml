@@ -1,0 +1,21 @@
+version: '3'
+services:
+  ngi:
+    image: nginx:latest
+    ports:
+      - "700:80"
+    volumes:
+      - ./webser:/etc/nginx/conf.d
+      - ./siteroot:/var/www
+      - ./journal/wserv:/var/log/nginx
+    links:
+      - piha
+  piha:
+    build: ./constr/hyprep
+    extra_hosts:
+      host.docker.internal: host-gateway
+    ports:
+      - "7000:8000"
+    volumes:
+      - ./siteroot:/var/www
+      - ./journal/xdeb:/var/logs/xdebug
